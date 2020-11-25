@@ -37,6 +37,8 @@ public abstract class MultithreadEventLoopGroup extends MultithreadEventExecutor
     private static final int DEFAULT_EVENT_LOOP_THREADS;
 
     static {
+        // 默认的线程池线程数量，从参数io.netty.eventLoopThreads读取，如果没有设置就用cpu的核数*2。然后和1比较取最大的
+        // 即最小是1，即起码线程池中会有一个线程
         DEFAULT_EVENT_LOOP_THREADS = Math.max(1, SystemPropertyUtil.getInt(
                 "io.netty.eventLoopThreads", NettyRuntime.availableProcessors() * 2));
 

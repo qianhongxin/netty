@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  * life-cycle and allows shutting them down in a global fashion.
  *
  */
+// 本质在底层就是一个线程池，可以让你从里面获取新的线程，以及他会负责管理这些线程的生命周期
 public interface EventExecutorGroup extends ScheduledExecutorService, Iterable<EventExecutor> {
 
     /**

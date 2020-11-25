@@ -81,6 +81,11 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
         for (int i = 0; i < nThreads; i ++) {
             boolean success = false;
             try {
+                // newChild掉用的是NioEventLoopGroup实现类
+                // 这里的children中的每个都是一个线程，每个都叫做NioEventLoop，每个线程都会负责一部分的客户端连接的SocketChannel，
+                // 对这些SocketChannel都会注册在线程自己的Selector中，每个线程通过自己的Selector去轮询（Loop）他负责的这一批客户端连接
+                // 的网络请求事件。即类似于NioProcessor
+                // NioEventLoop就是负责轮询Nio事件的线程，轮询多个客户端连接的Nio事件
                 children[i] = newChild(executor, args);
                 success = true;
             } catch (Exception e) {

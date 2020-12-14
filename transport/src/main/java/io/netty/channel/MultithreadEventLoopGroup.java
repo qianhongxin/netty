@@ -85,6 +85,10 @@ public abstract class MultithreadEventLoopGroup extends MultithreadEventExecutor
 
     @Override
     public ChannelFuture register(Channel channel) {
+        // next方法最终调用的是GenericEventExecutorChooser的next方法，轮询让executors中的线程提供服务。所以每次调用next方法
+        // 都会返回一个线程（即MultithreadEventExecutorGroup的children字段）。这里的线程中含有自己的Selector，让这个线程去负责channel的网络事件处理。
+
+        // 调用的是SingleThreadEventLoop的register方法
         return next().register(channel);
     }
 

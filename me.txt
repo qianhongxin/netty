@@ -1,0 +1,1 @@
+netty也是用的reactor网络模型架构。和kafka，xiaowenjian一样

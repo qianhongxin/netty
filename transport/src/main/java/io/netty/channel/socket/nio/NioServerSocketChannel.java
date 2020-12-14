@@ -42,6 +42,7 @@ import java.util.Map;
  * A {@link io.netty.channel.socket.ServerSocketChannel} implementation which uses
  * NIO selector based implementation to accept new connections.
  */
+// 则是netty自己对ServerSocketChannel的封装，命名不太好
 public class NioServerSocketChannel extends AbstractNioMessageChannel
                              implements io.netty.channel.socket.ServerSocketChannel {
 
@@ -58,6 +59,7 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
              *
              *  See <a href="https://github.com/netty/netty/issues/2308">#2308</a>.
              */
+            // 利用原生的nio的api创建ServerSocketChannel
             return provider.openServerSocketChannel();
         } catch (IOException e) {
             throw new ChannelException(
@@ -86,6 +88,7 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
      */
     public NioServerSocketChannel(ServerSocketChannel channel) {
         super(null, channel, SelectionKey.OP_ACCEPT);
+        // 创建了一个config
         config = new NioServerSocketChannelConfig(this, javaChannel().socket());
     }
 

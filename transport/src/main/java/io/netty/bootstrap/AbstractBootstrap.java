@@ -314,10 +314,17 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         }
     }
 
+    // 初始化一个ServerSocketChannel，注册到Selector多路复用组件上去
     final ChannelFuture initAndRegister() {
         Channel channel = null;
         try {
+            // 就是创建ServerSocketChannel
+            // 做好了配置
+            // 准备好了将要关注的网络事件OP_ACCEPT
+            // 调用的是ReflectiveChannelFactory实现
             channel = channelFactory.newChannel();
+            // 让serverSocketChannel监听端口号，设置一些网路参数，
+            // 然后再让这个ServerSocketChannel注册到Selector上去，关注他的OP_ACCEPT网络事件，不停的轮询他
             init(channel);
         } catch (Throwable t) {
             if (channel != null) {
@@ -330,6 +337,10 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return new DefaultChannelPromise(new FailedChannel(), GlobalEventExecutor.INSTANCE).setFailure(t);
         }
 
+        // 拿出来了之前创建的一个EventLoopGroup，猜测，就是独立的线程，然后用Selector轮询各种channel的网络事件
+        // 把ServerSocketChannel注册到了一个EventLoopGroup上去
+        // 这里的意思：就是让EventLoopGroup中的独立线程采用一个Selector来注册channel，以及轮询事件
+        // 根据demo中，这里就是调用的EeventLoopGroup的父类MultithreadEventLoopGroup的register方法
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {

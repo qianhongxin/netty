@@ -85,6 +85,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         this.ch = ch;
         this.readInterestOp = readInterestOp;
         try {
+            // 配置成false
             ch.configureBlocking(false);
         } catch (IOException e) {
             try {

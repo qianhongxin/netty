@@ -139,12 +139,16 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
     @Override
     void init(Channel channel) throws Exception {
+        // options就是我们设置的参数
         final Map<ChannelOption<?>, Object> options = options0();
         synchronized (options) {
+            // 设置网络参数到ServerSocketChannel中
             setChannelOptions(channel, options, logger);
         }
 
+        // 获取我们设置的attrs，即属性
         final Map<AttributeKey<?>, Object> attrs = attrs0();
+        // 设置属性参数到ServerSocketChannel中
         synchronized (attrs) {
             for (Entry<AttributeKey<?>, Object> e: attrs.entrySet()) {
                 @SuppressWarnings("unchecked")
@@ -153,8 +157,10 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             }
         }
 
+        // 网络请求处理链路，pipiline，责任链模式
         ChannelPipeline p = channel.pipeline();
 
+        // 我们设置的两个线程组
         final EventLoopGroup currentChildGroup = childGroup;
         final ChannelHandler currentChildHandler = childHandler;
         final Entry<ChannelOption<?>, Object>[] currentChildOptions;
@@ -166,6 +172,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             currentChildAttrs = childAttrs.entrySet().toArray(newAttrArray(0));
         }
 
+        // 对网络请求处理链路增加一个内置的处理器
         p.addLast(new ChannelInitializer<Channel>() {
             @Override
             public void initChannel(final Channel ch) throws Exception {

@@ -9,7 +9,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-// reactor架构就是两个线程组，多路复用等处理网络请求。结合小文件来理解。netty这里就是用的reactor
+// reactor架构就是两个线程组，多路复用等处理网络请求。结合xiao来理解。netty这里就是用的reactor
 public class NettyServer {
 	
 	public static void main(String[] args) {

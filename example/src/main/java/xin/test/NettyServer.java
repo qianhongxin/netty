@@ -21,7 +21,7 @@ public class NettyServer {
 			
 			serverBootstrap
 					.group(parentGroup, childGroup)
-					.channel(NioServerSocketChannel.class)  // 监听端口的ServerSocketChannel
+					.channel(NioServerSocketChannel.class)  // 保存监听端口的ServerSocketChannel，即NioServerSocketChannel。后面创建ServerSocketChannel时需要
 					.option(ChannelOption.SO_BACKLOG, 1024)
 					.childHandler(new ChannelInitializer<SocketChannel>() { // 处理每个连接的SocketChannel
 

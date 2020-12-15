@@ -110,10 +110,14 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     /**
      * The NIO {@link Selector}.
      */
+    // 包装过的Selector即SelectedSelectionKeySetSelector，见openSelector方法的返回值
     private Selector selector;
+    // 原生的，未被包装的java的Selector。不过这里的unwrappedSelector和SelectedSelectionKeySelector的selector是同一个
     private Selector unwrappedSelector;
+    // 存放selectionKey的，和SelectedSelectionKeySelector的selectedKeys是同一个
     private SelectedSelectionKeySet selectedKeys;
 
+    // Selector的创建器
     private final SelectorProvider provider;
 
     /**
@@ -418,6 +422,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
         }
     }
 
+    // selector死循环转
     @Override
     protected void run() {
         for (;;) {

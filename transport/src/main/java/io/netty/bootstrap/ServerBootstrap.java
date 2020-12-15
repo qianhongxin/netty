@@ -137,6 +137,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         return this;
     }
 
+    // 该channel是ServerSocketChannel类型
     @Override
     void init(Channel channel) throws Exception {
         // options就是我们设置的参数
@@ -160,9 +161,11 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         // 网络请求处理链路，pipiline，责任链模式
         ChannelPipeline p = channel.pipeline();
 
-        // 我们设置的两个线程组
+        // 我们设置的两个线程组中的childGroup
         final EventLoopGroup currentChildGroup = childGroup;
+        // 我们设置的pipeline的处理器
         final ChannelHandler currentChildHandler = childHandler;
+        // 网络等参数处理
         final Entry<ChannelOption<?>, Object>[] currentChildOptions;
         final Entry<AttributeKey<?>, Object>[] currentChildAttrs;
         synchronized (childOptions) {
